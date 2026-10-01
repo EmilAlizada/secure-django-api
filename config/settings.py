@@ -18,7 +18,7 @@ DEBUG = env_bool("DJANGO_DEBUG", False)
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "")
 if not SECRET_KEY:
     if DEBUG:
-        SECRET_KEY = "dev-only-unsafe-key"
+        SECRET_KEY = "dev-only-unsafe-key"  # nosec B105 - local debug fallback only
     else:
         raise RuntimeError("DJANGO_SECRET_KEY must be set when DJANGO_DEBUG is false")
 
