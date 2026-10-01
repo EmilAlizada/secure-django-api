@@ -14,12 +14,10 @@ RUN apt-get update \
 RUN addgroup --system app && adduser --system --ingroup app app
 
 COPY requirements.txt .
-RUN python -m pip install --upgrade \
-        pip \
-        "setuptools>=78.1.1" \
-        "urllib3>=2.8.0" \
-        "msgpack>=1.2.1" \
-    && pip install -r requirements.txt
+RUN python -m pip install --upgrade pip \
+    && pip install -r requirements.txt \
+    && python -m pip uninstall -y setuptools wheel \
+    && python -m pip uninstall -y pip
 
 COPY --chown=app:app . .
 
