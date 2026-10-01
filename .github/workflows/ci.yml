@@ -1,0 +1,71 @@
+name: CI / Security
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  security-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      DJANGO_DEBUG: "false"
+      DJANGO_SECRET_KEY: "ci-only-placeholder-key-not-for-production"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Django checks
+        run: python manage.py check
+
+      - name: Tests
+        run: pytest -q
+
+      - name: SAST
+        run: bandit -q -r api config -x api/tests.py,api/migrations
+
+      - name: Dependency audit
+        run: pip-audit -r requirements.txt
+
+      - name: Build container
+        run: docker build --tag secure-django-api:ci .
+
+      - name: Scan container
+        uses: aquasecurity/trivy-action@0.36.0
+        with:
+          image-ref: secure-django-api:ci
+          format: table
+          exit-code: "1"
+          ignore-unfixed: true
+          severity: HIGH,CRITICAL
