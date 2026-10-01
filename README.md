@@ -1,5 +1,7 @@
 # Secure Django API
 
+[![CI / Security](https://github.com/EmilAlizada/secure-django-api/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/EmilAlizada/secure-django-api/actions/workflows/ci.yml)
+
 A security-focused REST API built to demonstrate **authentication, authorization, secure configuration, data isolation, abuse resistance, testing, and security automation** in a compact Django codebase.
 
 > Portfolio / learning project. The security decisions are intentionally documented so reviewers can inspect both the implementation and the reasoning.
