@@ -191,6 +191,14 @@ Ruff
 - [ ] Redis-backed distributed throttling
 - [ ] deployment behind a TLS-terminating reverse proxy
 
+## Explore the portfolio
+
+- [DevSecOps Pipeline](https://github.com/EmilAlizada/devsecops-pipeline)
+- [Kubernetes Security Lab](https://github.com/EmilAlizada/kubernetes-security-lab)
+- [Python Security Toolkit](https://github.com/EmilAlizada/python-security-toolkit)
+
+[GitHub profile](https://github.com/EmilAlizada)
+
 ## Author
 
 **Emil Alizada**  
